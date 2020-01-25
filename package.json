@@ -1,0 +1,24 @@
+{
+  "name": "ReCampus",
+  "version": "1.0.0",
+  "description": "Modifies the eCampus website to make it look awesome",
+  "main": "index.js",
+  "dependencies": {
+    "node-sass": "^4.13.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thegreenjag1/ReCampus.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thegreenjag1/ReCampus/issues"
+  },
+  "homepage": "https://github.com/thegreenjag1/ReCampus#readme"
+}
