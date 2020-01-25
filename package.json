@@ -8,7 +8,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile": "npx node-sass ./ext/src/inject/inject.scss -o ./ext/src/inject/"
   },
   "repository": {
     "type": "git",

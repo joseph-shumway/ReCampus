@@ -4,7 +4,7 @@
     description: eCampus but it's fixed
     
     (commands):
-        run: echo no run
+        compile: npx node-sass ./ext/src/inject/inject.scss -o ./ext/src/inject/
         (setup): echo 'setup command unset' 
     
     (paths):
