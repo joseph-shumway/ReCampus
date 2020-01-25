@@ -22,7 +22,8 @@
   "content_scripts": [
     {
       "matches": [
-        "https://ecampus.tamu.edu/*"
+        "https://ecampus.tamu.edu/*",
+        "https://tamu.blackboard.com/*"
       ],
       "css": [
         "src/inject/inject.css"
@@ -30,7 +31,8 @@
     },
     {
       "matches": [
-        "https://ecampus.tamu.edu/*"
+        "https://ecampus.tamu.edu/*",
+        "https://tamu.blackboard.com/*"
       ],
       "js": [
         "src/inject/inject.js"
