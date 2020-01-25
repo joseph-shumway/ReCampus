@@ -1,0 +1,11 @@
+(using_atk_version): 1.1.0
+(project):
+    name: ReCampus
+    description: eCampus but it's fixed
+    
+    (commands):
+        run: echo no run
+        (setup): echo 'setup command unset' 
+    
+    (paths):
+        project_root: ./
