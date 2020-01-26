@@ -5,11 +5,11 @@
 
 
 /* HSL */
-$color1: hsla(193%, 39%, 21%, 1);
-$color2: hsla(190%, 91%, 41%, 1);
-$color3: hsla(173%, 55%, 74%, 1);
-$color4: hsla(14%, 100%, 78%, 1);
-$color5: hsla(46%, 100%, 97%, 1);
+$dBlue: hsla(193%, 39%, 21%, 1); //dark blue
+$lBlue: hsla(190%, 91%, 41%, 1); //light blue
+$lGreen: hsla(173%, 55%, 74%, 1); //light green
+$coral: hsla(14%, 100%, 78%, 1); //coral
+$alWhite: hsla(46%, 100%, 97%, 1); //almost white
 
 // pixel font
 @import url('https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap');
@@ -30,16 +30,21 @@ $color5: hsla(46%, 100%, 97%, 1);
     
         
     #logoContainer {
-        height: 20rem;
+        margin: 3rem;
+        color: hsla(46%, 100%, 97%, 1);
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        border: hsla(46%, 100%, 97%, 1) 2px solid;
+        padding: 5px 20px;
+        padding-bottom: 10px;
+        font-size: 30pt;
     }
         
     .courseTab {
         width: 100%;
         font-size: 14pt;
-        color: white;
+        color: $lBlue;
     }
 }
