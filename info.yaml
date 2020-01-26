@@ -9,3 +9,21 @@
     
     (paths):
         project_root: ./
+        
+    todo:
+        - logout button
+        - detect if class url
+        - hide body
+        - extract the sidepanel links
+        - generate tabs
+        - create class title bar
+        - extract course content:
+            - assignments
+            - videos
+            - grades
+        - style course content
+        - assign colors to indexes
+        - set color on active tab
+        - set color on tab hover
+        - duplicate my organizations into classes, add a seperator
+        - announcements
