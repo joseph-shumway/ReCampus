@@ -8,10 +8,14 @@ localStorage.setItem("classes",`
     {"name":"CHEM 107", "href": ""}
 ]`)
 
-
-let div = document.createElement("div")
+// 
+// actual code
+// 
 let classes = JSON.parse(localStorage.getItem("classes"))
 
+
+
+let div = document.createElement("div")
 // create all the buttons
 div.id = "courseList"
 div.innerHTML = `
@@ -25,5 +29,6 @@ div.classList.add("grey")
 div.classList.add("darken-3")
 
 window.onload = _=>{
+    // TODO: add 
     document.body.insertBefore(div, document.body.childNodes[0])
 }
