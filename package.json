@@ -4,11 +4,13 @@
   "description": "Modifies the eCampus website to make it look awesome",
   "main": "index.js",
   "dependencies": {
-    "node-sass": "^4.13.1"
+    "node-sass": "^4.13.1",
+    "parcel": "^1.12.4"
   },
   "devDependencies": {},
   "scripts": {
-    "compile": "npx node-sass ./ext/src/inject/inject.scss -o ./ext/src/inject/"
+    "compile": "npx node-sass ./ext/src/inject/inject.scss -o ./ext/src/inject/",
+    "test": "npx parcel test.html"
   },
   "repository": {
     "type": "git",
