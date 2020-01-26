@@ -15,7 +15,7 @@ setTimeout(()=>{
     // sets the #myCourses id
     getMyCoursesElement()
 
-    let classes = [...document.querySelectorAll("#myCourses li a")].map(each=>({href:each.href, name:each.name}))
+    let classes = [...document.querySelectorAll("#myCourses li a")].map(each=>({href:each.href, name:each.text}))
 
     localStorage.setItem("classes", JSON.stringify(classes))
     
