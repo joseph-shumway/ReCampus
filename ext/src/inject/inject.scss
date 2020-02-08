@@ -3,11 +3,11 @@
 // }
 
 /* HSL */
-$dBlue: hsla(193%, 39%, 21%, 1); //dark blue
-$lBlue: hsla(190%, 91%, 41%, 1); //light blue
-$lGreen: hsla(173%, 55%, 74%, 1); //light green
+$darkBlue: hsla(193%, 39%, 21%, 1); //dark blue
+$lightBlue: hsla(190%, 91%, 41%, 1); //light blue
+$lightGreen: hsla(173%, 55%, 74%, 1); //light green
 $coral: hsla(14%, 100%, 78%, 1); //coral
-$alWhite: hsla(46%, 100%, 97%, 1); //almost white
+$almostWhite: hsla(46%, 100%, 97%, 1); //almost white
 
 // pixel font
 @import url("https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap");
@@ -32,12 +32,12 @@ $alWhite: hsla(46%, 100%, 97%, 1); //almost white
 
     #logoContainer {
       margin: 3rem;
-      color: hsla(46%, 100%, 97%, 1);
+      color: grey;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      border: hsla(46%, 100%, 97%, 1) 2px solid;
+      border: grey 2px solid;
       padding: 5px 20px;
       padding-bottom: 10px;
       font-size: 30pt;
@@ -46,34 +46,65 @@ $alWhite: hsla(46%, 100%, 97%, 1); //almost white
     .courseTab {
       width: 100%;
       font-size: 14pt;
-      color: $lBlue;
+      color: $lightBlue;
     }
   }
 
   #courseContainer {
     display: flex;
     flex-grow: 1;
+    flex-direction: column;
 
-    #titleBar {
-        flex-direction: row;
+    #titleContainer {
+      display: flex;
+      flex-direction: row;
+    //   box-shadow: 0 8px 17px 2px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(0,0,0,0.2);
+    //   z-index: 999;
+
+      #logoutButton {
+          background-color: $lightGreen;
+          flex-grow: 1;
+          text-align: right;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 20pt;
+          color: $almostWhite;
+          
+          
+          
+      }
+
+      #titleBar {
         min-width: 100px;
         min-height: 100px;
-        background-color: $dBlue;
-        
+        background-color: $lightBlue;
+        margin: 0;
+        color: $almostWhite;
+        text-align: left;
+        padding: 5rem;
+        font-weight: 700;
+        flex-grow: 10;
+      }
     }
 
-    #classMenu {
-      display: flex;
-      flex-direction: column;
-      min-width: 20rem;
-      background-color: lightgrey;
-    }
-
-    #contentArea {
-      min-width: 100px;
-      min-height: 100px;
+    #mainArea {
       flex-grow: 1;
-      background-color: purple;
+      display: flex;
+
+      #classMenu {
+        display: flex;
+        flex-direction: column;
+        min-width: 20rem;
+        background-color: lightgrey;
+      }
+
+      #contentArea {
+        min-width: 100px;
+        min-height: 100px;
+        flex-grow: 1;
+        background-color: $almostWhite;
+      }
     }
   }
 }

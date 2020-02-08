@@ -8,6 +8,7 @@ localStorage.setItem("classes",`
     {"name":"CHEM 107", "href": ""}
 ]`)
 
+
 //
 // 
 // actual code
@@ -15,12 +16,12 @@ localStorage.setItem("classes",`
 //
 require("good-dom").global() // use a mini framework
 let classes = JSON.parse(localStorage.getItem("classes"))
-
-
+let currentClass = classes[0].name
+let hardcodedValues  = {logout: "/webapps/login/?action=logout"}
 //
 // create root container
 //
-let classSidebar
+let classSidebar, courseContainer, titleBar, classMenu, contentArea
 let rootContainer = new DIV(
     {id:"root"},
     // sidebar
@@ -35,52 +36,46 @@ let rootContainer = new DIV(
                 ${classes.map(each=>`<a class="courseTab waves-effect waves-teal btn-large btn-flat">${each.name}</a>`).join("\n")}
             `
         },
+    ),
+    courseContainer = new DIV (
+        {id: "courseContainer"}, 
+
+        titleContainer = new DIV(
+            {id: "titleContainer"},
+            
+            titleBar = new H1 (
+            {id: "titleBar"}, 
+            currentClass,
+            ),
+
+            logoutButton = new A (
+                {id: "logoutButton", href: hardcodedValues.logout},
+                "Logout"
+
+            )
+
+        ),
+        mainArea = new DIV (
+            {id: "mainArea"},
+
+            classMenu = new DIV (
+            {id: "classMenu"},
+            "classMenu"
+            ),
+
+            contentArea = new DIV (
+            {id: "contentArea"},
+            
+            "contentArea"
+            )
+
+        )
     )
 )
 classSidebar.classList.add("grey")
 classSidebar.classList.add("darken-3")
 
 
-//
-// create courseContainer
-//
-
-let courseContainer = document.createElement("div")
-courseContainer.id = "courseContainer"
-rootContainer.appendChild(courseContainer)
-
-
-//
-// create titleBar
-//
-
-let titleBar = document.createElement("div")
-titleBar.id = "titleBar"
-courseContainer.appendChild(titleBar)
-
-
-//
-// create classMenu
-//
-
-let classMenu = document.createElement("div")
-classMenu.id = "classMenu" 
-courseContainer.appendChild(classMenu)
-
-
-
-
-//
-// Add content area
-//
-
-let contentArea = document.createElement("div")
-contentArea.id = "contentArea"
-courseContainer.appendChild(contentArea)
-
-//
-// 
-//
 
 
 
