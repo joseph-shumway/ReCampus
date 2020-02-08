@@ -4,6 +4,7 @@
   "description": "Modifies the eCampus website to make it look awesome",
   "main": "index.js",
   "dependencies": {
+    "good-dom": "^4.1.2",
     "node-sass": "^4.13.1",
     "parcel": "^1.12.4"
   },
