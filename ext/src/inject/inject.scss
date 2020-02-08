@@ -2,8 +2,6 @@
 //     background-color: #ba32ba !important;
 // }
 
-
-
 /* HSL */
 $dBlue: hsla(193%, 39%, 21%, 1); //dark blue
 $lBlue: hsla(190%, 91%, 41%, 1); //light blue
@@ -12,13 +10,17 @@ $coral: hsla(14%, 100%, 78%, 1); //coral
 $alWhite: hsla(46%, 100%, 97%, 1); //almost white
 
 // pixel font
-@import url('https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap");
 
 :root {
-    --defaultFont: 'Press Start 2P', cursive;
+  --defaultFont: "Press Start 2P", cursive;
 }
 
-#courseList {
+#root {
+  display: flex;
+  flex-direction: row;
+
+  #classSidebar {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -27,24 +29,41 @@ $alWhite: hsla(46%, 100%, 97%, 1); //almost white
     align-items: center;
     justify-content: flex-start;
     font-size: 14pt;
-    
-        
+
     #logoContainer {
-        margin: 3rem;
-        color: hsla(46%, 100%, 97%, 1);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        border: hsla(46%, 100%, 97%, 1) 2px solid;
-        padding: 5px 20px;
-        padding-bottom: 10px;
-        font-size: 30pt;
+      margin: 3rem;
+      color: hsla(46%, 100%, 97%, 1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: hsla(46%, 100%, 97%, 1) 2px solid;
+      padding: 5px 20px;
+      padding-bottom: 10px;
+      font-size: 30pt;
     }
-        
+
     .courseTab {
-        width: 100%;
-        font-size: 14pt;
-        color: $lBlue;
+      width: 100%;
+      font-size: 14pt;
+      color: $lBlue;
     }
+  }
+
+  #courseContainer {
+    display: flex;
+
+    #classMenu {
+      display: flex;
+      flex-direction: column;
+      min-width: 20rem;
+      background-color: lightgrey;
+    }
+
+    #contentArea {
+      min-width: 100px;
+      min-height: 100px;
+      flex-grow: 1;
+    }
+  }
 }

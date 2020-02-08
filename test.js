@@ -8,27 +8,92 @@ localStorage.setItem("classes",`
     {"name":"CHEM 107", "href": ""}
 ]`)
 
+//
 // 
 // actual code
 // 
+//
+
 let classes = JSON.parse(localStorage.getItem("classes"))
 
 
+//
+// create root container
+//
+let rootContainer = document.createElement("div")
+rootContainer.id = "root"
 
-let div = document.createElement("div")
-// create all the buttons
-div.id = "courseList"
-div.innerHTML = `
+
+
+
+
+
+//
+// create classSidebar
+//
+
+let classSidebar = document.createElement("div")
+classSidebar.id = "classSidebar"
+classSidebar.innerHTML = `
     <div id=logoContainer>
         ReCampus
     </div>
 
     ${classes.map(each=>`<a class="courseTab waves-effect waves-teal btn-large btn-flat">${each.name}</a>`).join("\n")}
 `
-div.classList.add("grey")
-div.classList.add("darken-3")
+classSidebar.classList.add("grey")
+classSidebar.classList.add("darken-3")
+rootContainer.appendChild(classSidebar)
+
+
+//
+// create courseContainer
+//
+
+let courseContainer = document.createElement("div")
+courseContainer.id = "courseContainer"
+rootContainer.appendChild(courseContainer)
+
+
+
+//
+// create classMenu
+//
+
+let classMenu = document.createElement("div")
+classMenu.id = "classMenu" 
+courseContainer.appendChild(classMenu)
+
+
+
+
+//
+// Add content area
+//
+
+let contentArea = document.createElement("div")
+contentArea.id = "contentArea"
+courseContainer.appendChild(contentArea)
+
+//
+// 
+//
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 window.onload = _=>{
-    // TODO: add 
-    document.body.insertBefore(div, document.body.childNodes[0])
+
+    // Attach root container to body
+    document.body.insertBefore(rootContainer, document.body.childNodes[0])
 }
