@@ -52,6 +52,15 @@ $alWhite: hsla(46%, 100%, 97%, 1); //almost white
 
   #courseContainer {
     display: flex;
+    flex-grow: 1;
+
+    #titleBar {
+        flex-direction: row;
+        min-width: 100px;
+        min-height: 100px;
+        background-color: $dBlue;
+        
+    }
 
     #classMenu {
       display: flex;
@@ -64,6 +73,7 @@ $alWhite: hsla(46%, 100%, 97%, 1); //almost white
       min-width: 100px;
       min-height: 100px;
       flex-grow: 1;
+      background-color: purple;
     }
   }
 }

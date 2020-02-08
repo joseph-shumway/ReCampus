@@ -55,6 +55,14 @@ courseContainer.id = "courseContainer"
 rootContainer.appendChild(courseContainer)
 
 
+//
+// create titleBar
+//
+
+let titleBar = document.createElement("div")
+titleBar.id = "titleBar"
+courseContainer.appendChild(titleBar)
+
 
 //
 // create classMenu
