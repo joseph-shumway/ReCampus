@@ -1,1 +1,81 @@
-/* body {display:none;} */
+@import url("https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap");
+body {
+  display: none; }
+
+/* HSL */
+:root {
+  --defaultFont: "Press Start 2P", cursive; }
+
+#root {
+  display: flex;
+  flex-direction: row; }
+  #root #classSidebar {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 20rem;
+    background-color: gray;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 14pt; }
+    #root #classSidebar #logoContainer {
+      margin: 3rem;
+      color: grey;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: grey 2px solid;
+      padding: 5px 20px;
+      padding-bottom: 10px;
+      font-size: 30pt; }
+    #root #classSidebar .courseTab {
+      width: 100%;
+      font-size: 14pt;
+      color: #fffbf0; }
+  #root #courseContainer {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column; }
+    #root #courseContainer #titleContainer {
+      display: flex;
+      flex-direction: row; }
+      #root #courseContainer #titleContainer #logoutButton {
+        background-color: #98e1d9;
+        flex-grow: 1;
+        text-align: right;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20pt;
+        color: #fffbf0;
+        padding: 1rem; }
+      #root #courseContainer #titleContainer #titleBar {
+        min-width: 100px;
+        min-height: 100px;
+        background-color: #09a8c8;
+        margin: 0;
+        color: #fffbf0;
+        text-align: left;
+        padding: 5rem;
+        font-weight: 700;
+        flex-grow: 10; }
+    #root #courseContainer #mainArea {
+      flex-grow: 1;
+      display: flex; }
+      #root #courseContainer #mainArea #classMenu {
+        display: flex;
+        flex-direction: column;
+        min-width: 12rem;
+        background-color: lightgrey;
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem; }
+        #root #courseContainer #mainArea #classMenu a {
+          padding: 0.5rem 2rem;
+          text-decoration: underline; }
+      #root #courseContainer #mainArea #contentArea {
+        min-width: 100px;
+        min-height: 100px;
+        padding: 2rem;
+        flex-grow: 1;
+        background-color: #fffbf0; }

@@ -1,13 +1,3 @@
-// set the dummy classes
-// localStorage.setItem("classes",`
-// [
-//     {"name":"CHEM 107", "href": ""},
-//     {"name":"CHEM 107", "href": ""},
-//     {"name":"CHEM 107", "href": ""},
-//     {"name":"CHEM 107", "href": ""},
-//     {"name":"CHEM 107", "href": ""}
-// ]`)
-
 require("good-dom").global() // use a mini framework
 
 //

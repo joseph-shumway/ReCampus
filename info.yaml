@@ -11,7 +11,6 @@
         project_root: ./
         
     todo:
-        - logout button
         - detect if class url
         - hide body
         - extract the sidepanel links
