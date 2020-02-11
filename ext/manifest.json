@@ -24,7 +24,8 @@
       "matches": [
         "https://ecampus.tamu.edu/*",
         "https://tamu.blackboard.com/webapps/portal/*",
-        "https://tamu.blackboard.com/webapps/blackboard/*"
+        "https://tamu.blackboard.com/webapps/blackboard/*",
+        "https://tamu.blackboard.com/webapps/*"
       ],
       "css": [
         "src/inject/inject.css"
@@ -34,7 +35,8 @@
       "matches": [
         "https://ecampus.tamu.edu/*",
         "https://tamu.blackboard.com/webapps/portal/*",
-        "https://tamu.blackboard.com/webapps/blackboard/*"
+        "https://tamu.blackboard.com/webapps/blackboard/*",
+        "https://tamu.blackboard.com/webapps/*"
       ],
       "js": [
         "src/inject/inject.js"

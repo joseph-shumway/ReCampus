@@ -1,3 +1,4 @@
+console.log("loading")
 // 
 // 
 // 
@@ -210,10 +211,12 @@ if (url=="tamu.blackboard.com/webapps/portal/execute/tabs/tabAction?tab_tab_grou
     removeJunkCss()
     eCampusLocation = "home"
     console.log("on homepage")
-} else if (url.match(/tamu.blackboard.com\/webapps\/blackboard\/.*course_id.*/))  {
+} else if (url.match(/tamu.blackboard.com\/webapps\/.*course_id.*/))  {
     removeJunkCss()
     eCampusLocation = "probablyAClass"
     console.log("Probably on a course page")
+} else {
+    console.log("Unknown page")
 }
 
 

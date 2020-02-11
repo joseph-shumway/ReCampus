@@ -115,3 +115,43 @@ $almostWhite: hsla(46%, 100%, 97%, 1); //almost white
     }
   }
 }
+
+
+// 
+// fixes for eCampus content
+// 
+
+#pageTitleBar {
+    img {
+        display: none;
+    }
+}
+
+.contentList {
+    li {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+        
+        --icon-width: 5rem;
+        --icon-padding: 1rem;
+        --icon-space: calc(var(--icon-padding) + var(--icon-width));
+        
+        img {
+            height: var(--icon-width);
+            width: var(--icon-width);
+            padding-left: var(--icon-padding);
+        }
+        
+        .item {
+            flex-grow: 1;
+            min-width: 4px;
+            width: calc(100% - var(--icon-space));
+        }
+        
+        .reorder.editmode.hideme {
+            display: none;
+        }
+    }
+}

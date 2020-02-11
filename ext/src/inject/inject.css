@@ -79,3 +79,25 @@ body {
         padding: 2rem;
         flex-grow: 1;
         background-color: #fffbf0; }
+
+#pageTitleBar img {
+  display: none; }
+
+.contentList li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  --icon-width: 5rem;
+  --icon-padding: 1rem;
+  --icon-space: calc(var(--icon-padding) + var(--icon-width)); }
+  .contentList li img {
+    height: var(--icon-width);
+    width: var(--icon-width);
+    padding-left: var(--icon-padding); }
+  .contentList li .item {
+    flex-grow: 1;
+    min-width: 4px;
+    width: calc(100% - var(--icon-space)); }
+  .contentList li .reorder.editmode.hideme {
+    display: none; }
