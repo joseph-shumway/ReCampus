@@ -6,106 +6,105 @@
 // 
 // 
 
-
-// expand the HTML element ability
-Object.defineProperties(window.HTMLElement.prototype, {
-    // setting styles through a string
-    css : { set: Object.getOwnPropertyDescriptor(window.HTMLElement.prototype, 'style').set },
-    // allow setting of styles through string or object
-    style: {
-        set: function (styles) {
-            if (typeof styles == "string") {
-                this.css = styles
+    // expand the HTML element ability
+    Object.defineProperties(window.HTMLElement.prototype, {
+        // setting styles through a string
+        css : { set: Object.getOwnPropertyDescriptor(window.HTMLElement.prototype, 'style').set },
+        // allow setting of styles through string or object
+        style: {
+            set: function (styles) {
+                if (typeof styles == "string") {
+                    this.css = styles
+                } else {
+                    Object.assign(this.style, styles)
+                }
+            }
+        },
+        // allow setting of children directly
+        children: {
+            set: function(newChilden) {
+                // remove all children
+                while (this.firstChild) {
+                    this.removeChild(this.firstChild)
+                }
+                // add new child nodes
+                for (let each of newChilden) {
+                    this.add(each)
+                }
+            },
+            get: function() {
+                return this.childNodes
+            }
+        },
+        class: {
+            set : function(newClass) {
+                this.className = newClass
+            },
+            get : function() {
+                return this.className
+            }
+        }
+    })
+    // add()
+    window.HTMLElement.prototype.add = function (...inputs) {
+        for (let each of inputs) {
+            if (typeof each == 'string') {
+                this.appendChild(new window.Text(each))
+            } else if (each instanceof Function) {
+                this.add(each())
+            } else if (each instanceof Array) {
+                this.add(...each)
             } else {
-                Object.assign(this.style, styles)
+                this.appendChild(each)
             }
         }
-    },
-    // allow setting of children directly
-    children: {
-        set: function(newChilden) {
-            // remove all children
-            while (this.firstChild) {
-                this.removeChild(this.firstChild)
-            }
-            // add new child nodes
-            for (let each of newChilden) {
-                this.add(each)
-            }
+        return this
+    }
+    // the special "add" case of the select method
+    window.HTMLSelectElement.prototype.add = window.HTMLElement.prototype.add
+    // addClass()
+    window.HTMLElement.prototype.addClass = function (...inputs) {
+        return this.classList.add(...inputs)
+    }
+    // for (let eachChild of elemCollection)
+    window.HTMLCollection.prototype[Symbol.iterator] = function* () {
+        let index = 0
+        let len = this.length
+        while (index < len) {
+            yield this[index++]
+        }
+    }
+    // for (let eachChild of elem)
+    window.HTMLElement.prototype[Symbol.iterator] = function* () {
+        let index = 0
+        let len = this.childNodes.length
+        while (index < len) {
+            yield this.childNodes[index++]
+        }
+    }
+    // create a setter/getter for <head>
+    let originalHead = document.head
+    // add a setter to document.head
+    Object.defineProperty(document,"head", { 
+        set: (element) => {
+            document.head.add(...element.childNodes)
         },
-        get: function() {
-            return this.childNodes
-        }
-    },
-    class: {
-        set : function(newClass) {
-            this.className = newClass
-        },
-        get : function() {
-            return this.className
-        }
-    }
-})
-// add()
-window.HTMLElement.prototype.add = function (...inputs) {
-    for (let each of inputs) {
-        if (typeof each == 'string') {
-            this.appendChild(new window.Text(each))
-        } else if (each instanceof Function) {
-            this.add(each())
-        } else if (each instanceof Array) {
-            this.add(...each)
-        } else {
-            this.appendChild(each)
-        }
-    }
-    return this
-}
-// the special "add" case of the select method
-window.HTMLSelectElement.prototype.add = window.HTMLElement.prototype.add
-// addClass()
-window.HTMLElement.prototype.addClass = function (...inputs) {
-    return this.classList.add(...inputs)
-}
-// for (let eachChild of elemCollection)
-window.HTMLCollection.prototype[Symbol.iterator] = function* () {
-    let index = 0
-    let len = this.length
-    while (index < len) {
-        yield this[index++]
-    }
-}
-// for (let eachChild of elem)
-window.HTMLElement.prototype[Symbol.iterator] = function* () {
-    let index = 0
-    let len = this.childNodes.length
-    while (index < len) {
-        yield this.childNodes[index++]
-    }
-}
-// create a setter/getter for <head>
-let originalHead = document.head
-// add a setter to document.head
-Object.defineProperty(document,"head", { 
-    set: (element) => {
-        document.head.add(...element.childNodes)
-    },
-    get: ()=>originalHead
-})
+        get: ()=>originalHead
+    })
 
-// add all the dom elements
-let domElements = {}
-tagNames = ["a", "abbr", "acronym", "address", "applet", "area", "article", "aside", "audio", "b", "base", "basefont", "bdi", "bdo", "big", "blockquote", "body", "br", "button", "canvas", "caption", "center", "cite", "code", "col", "colgroup", "data", "datalist", "dd", "del", "details", "dfn", "dialog", "dir", "div", "dl", "dt", "em", "embed", "fieldset", "figcaption", "figure", "font", "footer", "form", "frame", "frameset", "h1", "h2", "h3", "h4", "h5", "h6", "head", "header", "hr", "html", "i", "iframe", "img", "input", "ins", "kbd", "label", "legend", "li", "link", "main", "map", "mark", "meta", "meter", "nav", "noframes", "noscript", "object", "ol", "optgroup", "option", "output", "p", "param", "picture", "pre", "progress", "q", "rp", "rt", "ruby", "s", "samp", "script", "section", "select", "small", "source", "span", "strike", "strong", "style", "sub", "summary", "sup", "svg", "table", "tbody", "td", "template", "textarea", "tfoot", "th", "thead", "time", "title", "tr", "track", "tt", "u", "ul", "var", "video", "wbr"]
-for (let each of tagNames) {
-    eval(`domElements.${each.toUpperCase()} = function(properties,...children) { 
-        if (properties instanceof window.Node || typeof properties == 'string') 
-            return document.createElement("${each}").add(properties, ...children)
-        return Object.assign(document.createElement("${each}"), properties).add(...children)}
-        `)
-}
+    // add all the dom elements
+    let domElements = {}
+    tagNames = ["a", "abbr", "acronym", "address", "applet", "area", "article", "aside", "audio", "b", "base", "basefont", "bdi", "bdo", "big", "blockquote", "body", "br", "button", "canvas", "caption", "center", "cite", "code", "col", "colgroup", "data", "datalist", "dd", "del", "details", "dfn", "dialog", "dir", "div", "dl", "dt", "em", "embed", "fieldset", "figcaption", "figure", "font", "footer", "form", "frame", "frameset", "h1", "h2", "h3", "h4", "h5", "h6", "head", "header", "hr", "html", "i", "iframe", "img", "input", "ins", "kbd", "label", "legend", "li", "link", "main", "map", "mark", "meta", "meter", "nav", "noframes", "noscript", "object", "ol", "optgroup", "option", "output", "p", "param", "picture", "pre", "progress", "q", "rp", "rt", "ruby", "s", "samp", "script", "section", "select", "small", "source", "span", "strike", "strong", "style", "sub", "summary", "sup", "svg", "table", "tbody", "td", "template", "textarea", "tfoot", "th", "thead", "time", "title", "tr", "track", "tt", "u", "ul", "var", "video", "wbr"]
+    for (let each of tagNames) {
+        eval(`domElements.${each.toUpperCase()} = function(properties,...children) { 
+            if (properties instanceof window.Node || typeof properties == 'string') 
+                return document.createElement("${each}").add(properties, ...children)
+            return Object.assign(document.createElement("${each}"), properties).add(...children)}
+            `)
+    }
 
-// make it global
-Object.assign(window, domElements)
+    // make it global
+    Object.assign(window, domElements)
 
 
 // 
@@ -115,12 +114,29 @@ Object.assign(window, domElements)
 // 
 // 
 // 
+let hardcodedValues  = {
+    logout: "/webapps/login/?action=logout"
+}
+
 function renderMain(menuItems, mainContentArea) {
         let classes = JSON.parse(localStorage.getItem("classes"))
-        console.log(`menuItems is:`,menuItems)
-        console.log(`classes is:`,classes)
-        let currentClass = classes[0].title
-        let hardcodedValues  = {logout: "/webapps/login/?action=logout"}
+        let currentClass = {}
+        try {
+            currentClass = classes.filter(each=>window.location.href.match(RegExp("course_id=_"+each.courseId,"g")))[0]
+        } catch (error) {
+            console.error("Couldn't find current class based on url")
+        }
+        let currentClassTitle = currentClass.title
+        let nameOfPage = ""
+        try {
+            // nameOfPage = document.getElementById("pageTitleHeader").innerText <<- cant use because mainContentArea hasn't been added to the document yet
+            nameOfPage = mainContentArea.children[1].children[1].children[2].children[0].innerText.trim()
+        } catch (error) {
+            
+        }
+        console.log(`nameOfPage is:`,nameOfPage)
+
+
         //
         // create root container
         //
@@ -136,7 +152,7 @@ function renderMain(menuItems, mainContentArea) {
                             ReCampus
                         </div>
 
-                        ${classes.map(each=>`<a class="courseTab waves-effect waves-teal btn-large btn-flat" href="${each.href}">${each.title}</a>`).join("\n")}
+                        ${classes.map(each=>`<a class="courseTab ${each.title==currentClassTitle&&"current"} waves-effect waves-teal btn-large btn-flat" href="${each.href}">${each.title}</a>`).join("\n")}
                     `
                 },
             ),
@@ -148,7 +164,7 @@ function renderMain(menuItems, mainContentArea) {
                     
                     titleBar = new H1 (
                         {id: "titleBar"}, 
-                        `${currentClass}`,
+                        `${currentClassTitle}`,
                     ),
 
                     logoutButton = new A (
@@ -238,6 +254,7 @@ let loadedHome = ()=> {
             ...each,
             title: `${each.title}`.trim().replace(/:.*/g,""),
             subtitle: `${each.title}`.trim().replace(/^.+?:/g,""),
+            courseId: `${each.href.replace(/^.+id=_(\d+?)_.+/,"$1")}`
         })
     })
     

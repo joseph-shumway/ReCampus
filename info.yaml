@@ -5,12 +5,16 @@
     
     (commands):
         compile: npx node-sass ./ext/src/inject/inject.scss -o ./ext/src/inject/
+        start_watcher: npx node-sass --watch ./ext/src/inject/inject.scss:./ext/src/inject/inject.css
         (setup): echo 'setup command unset' 
     
     (paths):
         project_root: ./
         
     todo:
+        - skypack link fails
+        - display normal eCampus on failure
+        - add hover
         - detect if class url
         - hide body
         - extract the sidepanel links
