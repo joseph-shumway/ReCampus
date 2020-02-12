@@ -220,103 +220,112 @@ function removeJunkCss() {
 // 
 // what page are we on
 // 
-let eCampusLocation = null
-let url = window.location.href.replace(/https?:\/\//, "")
-if (url=="tamu.blackboard.com/webapps/portal/execute/tabs/tabAction?tab_tab_group_id=_25_1") {
-    removeJunkCss()
-    eCampusLocation = "home"
-    console.log("on homepage")
-} else if (url.match(/tamu.blackboard.com\/webapps\/.*course_id.*/))  {
-    removeJunkCss()
-    eCampusLocation = "probablyAClass"
-    console.log("Probably on a course page")
-} else {
-    console.log("Unknown page")
-    // show everything
-    document.body.style.display = "unset"
-}
-
-
-// 
-// when on the homepage
-// 
-let classes
-let loadedHome = ()=> {
-    // 
-    // homepage
-    // 
-    // remove semester tag
-    classes = classes.map(each=>{
-        each.title = each.title.replace(/\d\d (SPRING|FALL|SUMMER)/,"")
-        return each
-    })
-    // extract the subtitle
-    classes = classes.map(each=>{
-        return ({
-            ...each,
-            title: `${each.title}`.trim().replace(/:.*/g,""),
-            subtitle: `${each.title}`.trim().replace(/^.+?:/g,""),
-            courseId: `${each.href.replace(/^.+id=_(\d+?)_.+/,"$1")}`
-        })
-    })
+try {
     
-    // save the classes to localStorage
-    localStorage.setItem("classes", JSON.stringify(classes))
-
-    // redirect to the first class's page
-    window.location.href = classes[0].href
-}
-
-
-// 
-// wait for page to load everything
-// 
-let loader = async function() {
-    
-    let getMyCoursesElement = () => {
-        let sorted = [...document.querySelectorAll("div")].filter(each => each.innerHTML.match(/<h2[\s\S]*<span[\s\S]*My Courses/g)).sort((a, b) => a.innerHTML.length - b.innerHTML.length)
-        sorted[0].id = "myCourses"
-        return sorted[0]
-    }
-
-    let getClassList = ()=> {
-        // sets the #myCourses id
-        getMyCoursesElement()
-        let classes = [...document.querySelectorAll("#myCourses li a")].map(each => ({ href: each.href, title: each.text }))
-        return classes
-    }
-
-    if (eCampusLocation == "home") {
-        // setup the interaval watcher
-
-        // try to see if the page loaded
-        let intervalWatcher
-        intervalWatcher = setInterval(()=>{
-            classes = []
-            try {
-                classes = getClassList()
-            } catch (error) {
-                
-            }
-            // if the classes were found
-            if (classes instanceof Array && classes.length > 0) {
-                // then stop looping and call the main function
-                clearInterval(intervalWatcher)
-                loadedHome()
-            }
-        }, 100)
-    } else if (eCampusLocation == "probablyAClass") {
-        let menuItems = [...document.querySelectorAll("#courseMenuPalette_contents li a")].map(each=>({href: each.href, text: each.innerText}))
-        let content = document.getElementById("content")
-        document.body = document.createElement("body")
-        renderMain(menuItems, content)
-        // display everything now that its loaded
-        document.body.style.display = "unset"
+    let eCampusLocation = null
+    let url = window.location.href.replace(/https?:\/\//, "")
+    if (url=="tamu.blackboard.com/webapps/portal/execute/tabs/tabAction?tab_tab_group_id=_25_1") {
+        removeJunkCss()
+        eCampusLocation = "home"
+        console.log("on homepage")
+    } else if (url.match(/tamu.blackboard.com\/webapps\/blackboard\/content\/contentWrapper\.jsp/))  {
+        eCampusLocation = "embeddedPage"
+        console.log("Probably on an embedded page")
+    } else if (url.match(/tamu.blackboard.com\/webapps\/.*course_id.*/))  {
+        removeJunkCss()
+        eCampusLocation = "probablyAClass"
+        console.log("Probably on a course page")
     } else {
+        console.log("Unknown page")
         // show everything
         document.body.style.display = "unset"
     }
-    
+
+
+    // 
+    // when on the homepage
+    // 
+    let classes
+    let loadedHome = ()=> {
+        // 
+        // homepage
+        // 
+        // remove semester tag
+        classes = classes.map(each=>{
+            each.title = each.title.replace(/\d\d (SPRING|FALL|SUMMER)/,"")
+            return each
+        })
+        // extract the subtitle
+        classes = classes.map(each=>{
+            return ({
+                ...each,
+                title: `${each.title}`.trim().replace(/:.*/g,""),
+                subtitle: `${each.title}`.trim().replace(/^.+?:/g,""),
+                courseId: `${each.href.replace(/^.+id=_(\d+?)_.+/,"$1")}`
+            })
+        })
+        
+        // save the classes to localStorage
+        localStorage.setItem("classes", JSON.stringify(classes))
+
+        // redirect to the first class's page
+        window.location.href = classes[0].href
+    }
+
+
+    // 
+    // wait for page to load everything
+    // 
+    let loader = async function() {
+        
+        let getMyCoursesElement = () => {
+            let sorted = [...document.querySelectorAll("div")].filter(each => each.innerHTML.match(/<h2[\s\S]*<span[\s\S]*My Courses/g)).sort((a, b) => a.innerHTML.length - b.innerHTML.length)
+            sorted[0].id = "myCourses"
+            return sorted[0]
+        }
+
+        let getClassList = ()=> {
+            // sets the #myCourses id
+            getMyCoursesElement()
+            let classes = [...document.querySelectorAll("#myCourses li a")].map(each => ({ href: each.href, title: each.text }))
+            return classes
+        }
+
+        if (eCampusLocation == "home") {
+            // setup the interaval watcher
+
+            // try to see if the page loaded
+            let intervalWatcher
+            intervalWatcher = setInterval(()=>{
+                classes = []
+                try {
+                    classes = getClassList()
+                } catch (error) {
+                    
+                }
+                // if the classes were found
+                if (classes instanceof Array && classes.length > 0) {
+                    // then stop looping and call the main function
+                    clearInterval(intervalWatcher)
+                    loadedHome()
+                }
+            }, 100)
+        } else if (eCampusLocation == "probablyAClass") {
+            let menuItems = [...document.querySelectorAll("#courseMenuPalette_contents li a")].map(each=>({href: each.href, text: each.innerText}))
+            let content = document.getElementById("content")
+            document.body = document.createElement("body")
+            renderMain(menuItems, content)
+            // display everything now that its loaded
+            document.body.classList.add("enabled")
+            document.body.style.display = "unset"
+        } else {
+            // show everything
+            document.body.style.display = "unset"
+        }
+        
+    }
+    // when the window loads, start main
+    window.addEventListener("load", ()=>loader())
+} catch (error) {
+    console.error(error)
 }
-// when the window loads, start main
-window.addEventListener("load", ()=>loader())

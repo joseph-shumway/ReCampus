@@ -24,7 +24,8 @@
       "matches": [
         "https://tamu.blackboard.com/webapps/portal/*",
         "https://tamu.blackboard.com/webapps/blackboard/*",
-        "https://tamu.blackboard.com/webapps/*"
+        "https://tamu.blackboard.com/webapps/discussionboard/*",
+        "https://tamu.blackboard.com/webapps/bb-mygrades-BBLEARN/*"
       ],
       "css": [
         "src/inject/inject.css"
@@ -32,10 +33,10 @@
     },
     {
       "matches": [
-        "https://ecampus.tamu.edu/*",
         "https://tamu.blackboard.com/webapps/portal/*",
         "https://tamu.blackboard.com/webapps/blackboard/*",
-        "https://tamu.blackboard.com/webapps/*"
+        "https://tamu.blackboard.com/webapps/discussionboard/*",
+        "https://tamu.blackboard.com/webapps/bb-mygrades-BBLEARN/*"
       ],
       "js": [
         "src/inject/inject.js"
