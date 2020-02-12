@@ -232,6 +232,8 @@ if (url=="tamu.blackboard.com/webapps/portal/execute/tabs/tabAction?tab_tab_grou
     console.log("Probably on a course page")
 } else {
     console.log("Unknown page")
+    // show everything
+    document.body.style.display = "unset"
 }
 
 

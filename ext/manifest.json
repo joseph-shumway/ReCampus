@@ -22,7 +22,6 @@
   "content_scripts": [
     {
       "matches": [
-        "https://ecampus.tamu.edu/*",
         "https://tamu.blackboard.com/webapps/portal/*",
         "https://tamu.blackboard.com/webapps/blackboard/*",
         "https://tamu.blackboard.com/webapps/*"
