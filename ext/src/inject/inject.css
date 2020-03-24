@@ -18,11 +18,12 @@ body.enabled {
       display: flex;
       flex-direction: column;
       min-height: 100vh;
-      width: 20rem;
       background-color: gray;
       align-items: center;
       justify-content: flex-start;
-      font-size: 14pt; }
+      font-size: 14pt;
+      --width: 20rem;
+      width: var(--width); }
       body.enabled #root #classSidebar #logoContainer {
         margin: 3rem;
         color: grey;
@@ -138,7 +139,8 @@ body.enabled {
       box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
       margin: 1rem;
       position: relative;
-      width: -webkit-fill-available; }
+      width: -webkit-fill-available;
+      overflow: auto; }
       body.enabled .container .portlet .edit_controls {
         position: absolute;
         right: 2rem; }

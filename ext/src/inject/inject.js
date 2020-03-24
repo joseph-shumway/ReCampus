@@ -33,7 +33,7 @@
                 }
             },
             get: function() {
-                return this.childNodes
+                return [...this.childNodes]
             }
         },
         class: {
@@ -43,7 +43,7 @@
             get : function() {
                 return this.className
             }
-        }
+        },
     })
     // add()
     window.HTMLElement.prototype.add = function (...inputs) {
@@ -62,6 +62,10 @@
     }
     // the special "add" case of the select method
     window.HTMLSelectElement.prototype.add = window.HTMLElement.prototype.add
+    // find()
+    window.HTMLElement.prototype.find = function (...inputs) {
+        return ([...this.childNodes]).find(...inputs)
+    }
     // addClass()
     window.HTMLElement.prototype.addClass = function (...inputs) {
         return this.classList.add(...inputs)
@@ -118,6 +122,47 @@ let hardcodedValues  = {
     logout: "/webapps/login/?action=logout"
 }
 
+function handleTheIfThisItemDoesNotOpenAutomaticallyCase(mainContentArea) {
+    let hasASingleRedirect = null
+    let newHref = null
+    try {
+        let contentArea = mainContentArea.querySelector("#content_listContainer")
+        hasASingleRedirect = contentArea.innerText.match(/^\s*If this item does not open automatically you can open .+ here\s*$/g)
+        let linkElement = [...contentArea.querySelectorAll("a")].filter(each=>each.innerText.match(/open .+ here/))[0]
+        newHref = linkElement.href
+    } catch (errors) {
+
+    }
+    if (hasASingleRedirect) {
+        // get the real redirect page because eCampus is dumb and redirects 2 times and hides the first one in javascript
+        let aRequest = new XMLHttpRequest() // this is deprecated because sync but it's fastest because its sync.
+        aRequest.open('GET', newHref, false)
+        aRequest.send(null)
+        let redirectionContent = aRequest.responseText
+        // remove everything other than the script element
+        let scriptContent = redirectionContent.replace(/^[^]*?<script.+>/, "").replace(/<\/script>[^]*?$/,"")
+        // get the string that is going to do the redirect
+        let newAddressContent = scriptContent.replace(/^[^]*?'/, "").replace(/'[^\']*$/,"")
+        // evaluate any escapes
+        let newAddress = eval(`'${newAddressContent}'`)
+        // 
+        // open redirect in new tab behavior
+        // 
+        window.open(newAddress, '_blank')
+        // if no history
+        if (document.referrer == "") {
+            // have the page close if not possible to go back
+            window.close()
+        } else {
+            // have this page go back if possible
+            history.go(-1)
+        }
+        return true
+    }
+    return false
+}
+
+
 function renderMain(menuItems, mainContentArea) {
         let classes = JSON.parse(localStorage.getItem("classes"))
         let currentClass = {}
@@ -135,7 +180,13 @@ function renderMain(menuItems, mainContentArea) {
             
         }
         console.log(`nameOfPage is:`,nameOfPage)
-
+        
+        // 
+        // check for redirection, then auto redirect
+        //
+        if (handleTheIfThisItemDoesNotOpenAutomaticallyCase(mainContentArea)) {
+            return // return early (render nothing) if being redirected
+        }
 
         //
         // create root container
@@ -240,6 +291,11 @@ try {
         // show everything
         document.body.style.display = "unset"
     }
+
+    // submission page url (nothing submitted yet)
+    // https://tamu.blackboard.com/webapps/assignment/uploadAssignment?content_id=_6621584_1&course_id=_162589_1&group_id=&mode=view
+    // submission page url (after submission)
+    // https://tamu.blackboard.com/webapps/assignment/uploadAssignment?course_id=_162589_1&content_id=_6621584_1&mode=view
 
 
     // 
