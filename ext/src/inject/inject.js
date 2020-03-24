@@ -199,11 +199,13 @@ function renderMain(menuItems, mainContentArea) {
                 {
                     id: "classSidebar",
                     innerHTML: `
-                        <div id=logoContainer>
-                            ReCampus
-                        </div>
+                        <div id=sideBarMovingArea>
+                            <div id=logoContainer>
+                                ReCampus
+                            </div>
 
-                        ${classes.map(each=>`<a class="courseTab ${each.title==currentClassTitle&&"current"} waves-effect waves-teal btn-large btn-flat" href="${each.href}">${each.title}</a>`).join("\n")}
+                            ${classes.map(each=>`<a class="courseTab ${each.title==currentClassTitle&&"current"} waves-effect waves-teal btn-large btn-flat" href="${each.href}">${each.title}</a>`).join("\n")}
+                        </div>
                     `
                 },
             ),
@@ -296,6 +298,8 @@ try {
     // https://tamu.blackboard.com/webapps/assignment/uploadAssignment?content_id=_6621584_1&course_id=_162589_1&group_id=&mode=view
     // submission page url (after submission)
     // https://tamu.blackboard.com/webapps/assignment/uploadAssignment?course_id=_162589_1&content_id=_6621584_1&mode=view
+    // quiz url
+    // https://tamu.blackboard.com/webapps/assessment/take/launchAssessment.jsp?course_id=_162589_1&content_id=_6645512_1&mode=view
 
 
     // 

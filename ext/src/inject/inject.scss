@@ -31,7 +31,9 @@ body.enabled {
     flex-direction: row;
   
     #classSidebar {
+      transition: all 500ms ease;
       display: flex;
+      position: relative;
       flex-direction: column;
       min-height: 100vh;
       background-color: gray;
@@ -39,30 +41,45 @@ body.enabled {
       justify-content: flex-start;
       font-size: 14pt;
       --width: 20rem;
+      --hidden-width: 3rem;
       width: var(--width);
-  
-      #logoContainer {
-        margin: 3rem;
-        color: grey;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        border: grey 2px solid;
-        padding: 5px 20px;
-        padding-bottom: 10px;
-        font-size: 30pt;
+      min-width: var(--width);
+      
+      &:not(:hover) {
+          max-width: var(--hidden-width);
+          min-width: var(--hidden-width);
+          width: var(--hidden-width);
       }
-  
-      .courseTab {
-        width: 100%;
-        font-size: 14pt;
-        color: $almostWhite;
+      
+      #sideBarMovingArea {    
+        position: absolute;
+        width: var(--width);
+        right: 0px;
         
-        &.current {
-            background-color: $lightBlue;
+        #logoContainer {
+            margin: 3rem;
+            color: grey;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: grey 2px solid;
+            padding: 5px 20px;
+            padding-bottom: 10px;
+            font-size: 30pt;
+        }
+    
+        .courseTab {
+            width: 100%;
+            font-size: 14pt;
+            color: $almostWhite;
+            
+            &.current {
+                background-color: $lightBlue;
+            }
         }
       }
+  
     }
   
     #courseContainer {
@@ -113,6 +130,9 @@ body.enabled {
           background-color: lightgrey;
           padding-top: 1.5rem;
           padding-bottom: 1.5rem;
+          padding-left: 1rem;
+          flex: 1;
+          max-width: 19rem;
           
           a {
               padding: 0.5rem 2rem;
@@ -124,7 +144,7 @@ body.enabled {
           min-width: 100px;
           min-height: 100px;
           padding: 2rem;
-          flex-grow: 1;
+          flex: 2.9;
           background-color: $almostWhite;
         }
       }
