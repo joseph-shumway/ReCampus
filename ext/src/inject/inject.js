@@ -187,6 +187,9 @@ function renderMain(menuItems, mainContentArea) {
             
         }
         console.log(`nameOfPage is:`,nameOfPage)
+        // delete all the style tags
+        ;([...mainContentArea.querySelectorAll("style")]).map(n => n && n.remove())
+
         
         // 
         // check for redirection, then auto redirect
