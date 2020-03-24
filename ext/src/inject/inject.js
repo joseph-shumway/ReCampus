@@ -148,12 +148,19 @@ function handleTheIfThisItemDoesNotOpenAutomaticallyCase(mainContentArea) {
         // 
         // open redirect in new tab behavior
         // 
-        window.open(newAddress, '_blank')
+
         // if no history
-        if (document.referrer == "") {
-            // have the page close if not possible to go back
-            window.close()
+        if (document.referrer == "" || history.length < 2) {
+            // open in hidden new tab
+            let a = document.createElement("a")
+            a.href = newAddress
+            let event = document.createEvent("MouseEvents");
+            //the tenth parameter of initMouseEvent sets ctrl key
+            event.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, true, false, false, false, 0, null)
+            a.dispatchEvent(event)
         } else {
+            // open in active new tab
+            window.open(newAddress, '_blank')
             // have this page go back if possible
             history.go(-1)
         }
