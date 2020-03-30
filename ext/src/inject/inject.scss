@@ -51,8 +51,10 @@ body.enabled {
             }
             
             &:hover {
-                #archivedCoursesTitle {
-                    margin: 0 10%;
+                #sideBarMovingArea {
+                    #archivedCoursesTitle {
+                        margin: 0 10%;
+                    }
                 }
             }
 
@@ -76,6 +78,7 @@ body.enabled {
                 
                 #archivedCoursesTitle {
                     transition: all 500ms ease;
+                    margin: 0 15%;
                 }
                 
                 .courseTab {

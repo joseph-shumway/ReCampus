@@ -289,7 +289,7 @@ function renderMain(menuItems, mainContentArea) {
                                 ${classes.filter(each=>!each.isArchived).map(each=>`<a class="courseTab ${each.title==currentClassTitle&&"current"} waves-effect waves-teal btn-large btn-flat" style="--background-color: ${each.color};" href="${each.href}">${each.title}</a>`).join("\n")}
                                 
                                 <div style='height: 2rem'></div>
-                                <div id=archivedCoursesTitle style='color: gray; border-bottom: 2px solid gray; margin: 0 15%; display: flex; align-content: center; justify-content: center'>Archived Courses</div>
+                                <div id=archivedCoursesTitle style='color: gray; border-bottom: 2px solid gray; display: flex; align-content: center; justify-content: center'>Archived Courses</div>
                                 ${classes.filter(each=>each.isArchived).map(each=>`<a class="courseTab archived ${each.title==currentClassTitle&&"current"} waves-effect waves-teal btn-large btn-flat" href="${each.href}">${each.title}</a>`).join("\n")}
                             </div>
                         `,
