@@ -54,7 +54,8 @@ body.enabled {
         body.enabled #root #classSidebar #sideBarMovingArea .courseTab {
           width: 100%;
           font-size: 14pt;
-          color: #fffbf0; }
+          color: #fffbf0;
+          border-radius: 0; }
           body.enabled #root #classSidebar #sideBarMovingArea .courseTab.current, body.enabled #root #classSidebar #sideBarMovingArea .courseTab:hover {
             background-color: var(--background-color); }
           body.enabled #root #classSidebar #sideBarMovingArea .courseTab.archived {
@@ -62,7 +63,9 @@ body.enabled {
     body.enabled #root #courseContainer {
       display: flex;
       flex-grow: 1;
-      flex-direction: column; }
+      flex-direction: column;
+      z-index: 1;
+      box-shadow: -8px 1px 26px -13px rgba(0, 0, 0, 0.54); }
       body.enabled #root #courseContainer #titleContainer {
         display: flex;
         flex-direction: row; }

@@ -99,6 +99,8 @@ body.enabled {
             display: flex;
             flex-grow: 1;
             flex-direction: column;
+            z-index: 1;
+            box-shadow: -8px 1px 26px -13px rgba(0,0,0,0.54);
 
             #titleContainer {
                 display: flex;
