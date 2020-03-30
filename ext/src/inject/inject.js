@@ -287,20 +287,30 @@ try {
     
     let eCampusLocation = null
     let url = window.location.href.replace(/https?:\/\//, "")
+    
+    // login page
     if (url=="ecampus.tamu.edu/") {
         // immediatly redirect to login page 
         window.location.href = "https://tamu.blackboard.com/webapps/bb-auth-provider-shibboleth-BBLEARN/execute/shibbolethLogin?returnUrl=https%3A%2F%2Ftamu.blackboard.com%2Fwebapps%2Fportal%2Fexecute%2FdefaultTab&authProviderId=_102_1"
+    
+    // eCampus home page (never show, just scrape data then redirect)
     } else if (url=="tamu.blackboard.com/webapps/portal/execute/tabs/tabAction?tab_tab_group_id=_25_1") {
         removeJunkCss()
         eCampusLocation = "home"
         console.log("on homepage")
+    
+    // embedded page (don't touch in order to preserve backwards compatibility)
     } else if (url.match(/tamu.blackboard.com\/webapps\/blackboard\/content\/contentWrapper\.jsp/))  {
         eCampusLocation = "embeddedPage"
         console.log("Probably on an embedded page")
+    
+    // probably a class page 
     } else if (url.match(/tamu.blackboard.com\/webapps\/.*course_id.*/))  {
         removeJunkCss()
         eCampusLocation = "probablyAClass"
         console.log("Probably on a course page")
+    
+    // something else (don't touch in order to preserve backwards compatibility)
     } else {
         console.log("Unknown page")
         // show everything
