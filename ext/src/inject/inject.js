@@ -287,7 +287,10 @@ try {
     
     let eCampusLocation = null
     let url = window.location.href.replace(/https?:\/\//, "")
-    if (url=="tamu.blackboard.com/webapps/portal/execute/tabs/tabAction?tab_tab_group_id=_25_1") {
+    if (url=="ecampus.tamu.edu") {
+        // immediatly redirect to login page 
+        window.location.href = "https://tamu.blackboard.com/webapps/bb-auth-provider-shibboleth-BBLEARN/execute/shibbolethLogin?returnUrl=https%3A%2F%2Ftamu.blackboard.com%2Fwebapps%2Fportal%2Fexecute%2FdefaultTab&authProviderId=_102_1"
+    } else if (url=="tamu.blackboard.com/webapps/portal/execute/tabs/tabAction?tab_tab_group_id=_25_1") {
         removeJunkCss()
         eCampusLocation = "home"
         console.log("on homepage")
