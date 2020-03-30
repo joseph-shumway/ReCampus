@@ -7,6 +7,7 @@
 // 
 
     // expand the HTML element ability
+    let classSetter
     Object.defineProperties(window.HTMLElement.prototype, {
         // setting styles through a string
         css : { set: Object.getOwnPropertyDescriptor(window.HTMLElement.prototype, 'style').set },
@@ -36,14 +37,27 @@
                 return [...this.childNodes]
             }
         },
-        class: {
-            set : function(newClass) {
+        class: classSetter = {
+            set: function(newClass) {
+                if (newClass instanceof Array) {
+                    newClass = newClass.join(" ")
+                }
                 this.className = newClass
             },
-            get : function() {
-                return this.className
+            get: function() {
+                let list = [...this.classList]
+                // create a remover
+                list.remove = (element)=>{
+                    this.classList.remove(element)
+                }
+                // create an adder
+                list.add = (element)=>{
+                    this.classList.add(element)
+                }
+                return list
             }
         },
+        classes: classSetter, // alternative name
     })
     // add()
     window.HTMLElement.prototype.add = function (...inputs) {
@@ -54,8 +68,11 @@
                 this.add(each())
             } else if (each instanceof Array) {
                 this.add(...each)
-            } else {
+            } else if (each instanceof Node){
                 this.appendChild(each)
+            } else {
+                console.error(" Trying to add (appendChild) this:", each, "\n\nto this element:", this, "\n\nhowever the element being added is not a node or object that I know how to convert to a node")
+                throw new TypeError()
             }
         }
         return this
@@ -170,8 +187,64 @@ function handleTheIfThisItemDoesNotOpenAutomaticallyCase(mainContentArea) {
 }
 
 
+function contextMenuHelper(eventObject, where, optionsAndCallbacks) {
+    let contextMenu = new UL({id: 'contextMenu', class: "collection"})
+    
+    for (let each of optionsAndCallbacks) {
+        // spacers
+        if (each == null) {
+            contextMenu.add(new LI({ class:"divider", tabindex:"-1"}))
+        }
+        // actual options
+        contextMenu.add(new A({ class: "btn-flat white", onclick: each[1]}, each[0]))
+    }
+    
+    contextMenu.style = {
+        position: 'fixed',
+        left: `${eventObject.clientX}px`,
+        top: `${eventObject.clientY}px`,
+    }
+    
+    // take up the entire screen so that clicking anywhere will close the menu
+    let clickAwayElement = new DIV(
+        {
+            css: `
+                display:flex;
+                position: fixed;
+                width: 200vw;
+                height: 200vh;
+                left: -50vw;
+                top: -50vh;
+                opacity: 1;
+                z-index: 999998;
+            `,
+            onclick: ()=>clickAwayElement.remove()
+        },
+        contextMenu
+    )
+    where.add(clickAwayElement)
+}
+
+let crudeHash = (string) => {
+    return ([...string]).map(each=>each.charCodeAt(0)).reduce((a,b)=>a+b,0)
+}
+
+// let colors = [ "blue lighten-2", "red lighten-2", "purple lighten-2", "light-green lighten-2", "deep-purple lighten-2", "deep-orange lighten-2", "brown lighten-2" ]
+let colors = [ "#4fc3f7", "#e57373", "#ba68c8", "#9ccc65", "#9575cd", "#ff8a65", "#a1887f" ]
+let render =()=>0
 function renderMain(menuItems, mainContentArea) {
+        // delete all the style tags
+        ;([...mainContentArea.querySelectorAll("style")]).map(n => n && n.remove())
+        // 
+        // load the saved classes, and calculate the current page
+        // 
         let classes = JSON.parse(localStorage.getItem("classes"))
+        for (let each of classes) {
+            let colorIndex = (crudeHash(each.subtitle) + 1) % colors.length
+            each.color = colors[colorIndex]
+            colors.splice(colorIndex, 1)
+        }
+        console.log(`classes is:`,classes)
         let currentClass = {}
         try {
             currentClass = classes.filter(each=>window.location.href.match(RegExp("course_id=_"+each.courseId,"g")))[0]
@@ -187,9 +260,7 @@ function renderMain(menuItems, mainContentArea) {
             
         }
         console.log(`nameOfPage is:`,nameOfPage)
-        // delete all the style tags
-        ;([...mainContentArea.querySelectorAll("style")]).map(n => n && n.remove())
-
+        
         
         // 
         // check for redirection, then auto redirect
@@ -201,63 +272,116 @@ function renderMain(menuItems, mainContentArea) {
         //
         // create root container
         //
-        let classSidebar, courseContainer, titleBar, classMenu, contentArea
-        let rootContainer = new DIV(
-            {id:"root"},
-            // sidebar
-            classSidebar = new DIV(
-                {
-                    id: "classSidebar",
-                    innerHTML: `
-                        <div id=sideBarMovingArea>
-                            <div id=logoContainer>
-                                ReCampus
+        let rootContainer, classSidebar, courseContainer, titleBar, classMenu, contentArea
+        render = () => {
+            rootContainer = new DIV(
+                {id:"root"},
+                // sidebar
+                classSidebar = new DIV(
+                    {
+                        id: "classSidebar",
+                        innerHTML: `
+                            <div id=sideBarMovingArea>
+                                <div id=logoContainer>
+                                    ReCampus
+                                </div>
+
+                                ${classes.filter(each=>!each.isArchived).map(each=>`<a class="courseTab ${each.title==currentClassTitle&&"current"} waves-effect waves-teal btn-large btn-flat" style="--background-color: ${each.color};" href="${each.href}">${each.title}</a>`).join("\n")}
+                                
+                                <div style='height: 2rem'></div>
+                                <div id=archivedCoursesTitle style='color: gray; border-bottom: 2px solid gray; margin: 0 15%; display: flex; align-content: center; justify-content: center'>Archived Courses</div>
+                                ${classes.filter(each=>each.isArchived).map(each=>`<a class="courseTab archived ${each.title==currentClassTitle&&"current"} waves-effect waves-teal btn-large btn-flat" href="${each.href}">${each.title}</a>`).join("\n")}
                             </div>
-
-                            ${classes.map(each=>`<a class="courseTab ${each.title==currentClassTitle&&"current"} waves-effect waves-teal btn-large btn-flat" href="${each.href}">${each.title}</a>`).join("\n")}
-                        </div>
-                    `
-                },
-            ),
-            courseContainer = new DIV (
-                {id: "courseContainer"}, 
-
-                titleContainer = new DIV(
-                    {id: "titleContainer"},
-                    
-                    titleBar = new H1 (
-                        {id: "titleBar"}, 
-                        `${currentClassTitle}`,
-                    ),
-
-                    logoutButton = new A (
-                        {id: "logoutButton", href: hardcodedValues.logout},
-                        "Logout"
-                    )
-
+                        `,
+                        classes: [ "grey", "darken-3" ]
+                    },
                 ),
-                mainArea = new DIV (
-                    {id: "mainArea"},
+                courseContainer = new DIV (
+                    {id: "courseContainer"}, 
 
-                    classMenu = new DIV (
-                        {
-                            id: "classMenu",
-                        },
-                        ...menuItems.map(each=> new A({ innerText: each.text, href: each.href }))
+                    titleContainer = new DIV(
+                        {id: "titleContainer"},
+                        
+                        titleBar = new H1 (
+                            {
+                                id: "titleBar",
+                                style: {
+                                    backgroundColor: currentClass.color
+                                }
+                            }, 
+                            `${currentClassTitle}`,
+                        ),
+
+                        logoutButton = new A (
+                            {id: "logoutButton", href: hardcodedValues.logout},
+                            "Logout"
+                        )
+
                     ),
+                    mainArea = new DIV (
+                        {id: "mainArea"},
 
-                    contentArea = new DIV (
-                        {id: "contentArea"},
-                        mainContentArea
+                        classMenu = new DIV (
+                            {
+                                id: "classMenu",
+                            },
+                            ...menuItems.map(each=> new A({ innerText: each.text, href: each.href }))
+                        ),
+
+                        contentArea = new DIV (
+                            {id: "contentArea"},
+                            mainContentArea
+                        )
                     )
-
                 )
             )
-        )
-        classSidebar.classList.add("grey")
-        classSidebar.classList.add("darken-3")
+            document.body.insertBefore(rootContainer, document.body.childNodes[0])
+        }
         
-        document.body.insertBefore(rootContainer, document.body.childNodes[0])
+        // 
+        // add context menu to course list
+        // 
+        document.addEventListener('contextmenu', (eventObject) => {
+            console.log(`eventObject is:`,eventObject)
+            if (eventObject.target.classes.includes("courseTab")) {
+                // don't show the default context menu
+                eventObject.preventDefault()
+                // figure out which course got right-clicked
+                let targetClass = classes.find(each=>each.href == eventObject.target.href)
+                
+                let contextOptions = []
+                // show dropdown menu
+                if (targetClass.isArchived == true) {
+                    contextOptions.push([
+                        "Unarchive this course",
+                        ()=>{
+                            targetClass.isArchived = false
+                            // save the changes
+                            localStorage.setItem("classes", JSON.stringify(classes))
+                            // re-render the side bar
+                            render()
+                        },
+                    ])
+                } else {
+                    contextOptions.push([
+                        "Archive this course",
+                        ()=>{
+                            targetClass.isArchived = true
+                            // save the changes
+                            localStorage.setItem("classes", JSON.stringify(classes))
+                            // re-render the side bar
+                            render()
+                        }
+                    ])
+                }
+                
+                
+                contextMenuHelper(eventObject, classSidebar, contextOptions)
+            }
+
+        }, false)
+        
+        render()
 }
 
 
@@ -273,9 +397,7 @@ function renderMain(menuItems, mainContentArea) {
 function removeJunkCss() {
     document.head.innerHTML = `<!-- Compiled and minified CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-
-        <!-- Compiled and minified JavaScript -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>`
+    `
 }
 
 
@@ -316,6 +438,15 @@ try {
         // show everything
         document.body.style.display = "unset"
     }
+    
+    // set the favicon for all pages
+    document.head.add(
+        new LINK({
+            rel: "shortcut icon",
+            // this was taken from: https://favicon.io/emoji-favicons/
+            href: `https://twemoji.maxcdn.com/2/svg/1f516.svg` }
+        )
+    )
 
     // submission page url (nothing submitted yet)
     // https://tamu.blackboard.com/webapps/assignment/uploadAssignment?content_id=_6621584_1&course_id=_162589_1&group_id=&mode=view

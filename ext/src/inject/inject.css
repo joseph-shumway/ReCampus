@@ -32,6 +32,8 @@ body.enabled {
         max-width: var(--hidden-width);
         min-width: var(--hidden-width);
         width: var(--hidden-width); }
+      body.enabled #root #classSidebar:hover #archivedCourses {
+        margin: 0 10%; }
       body.enabled #root #classSidebar #sideBarMovingArea {
         position: absolute;
         width: var(--width);
@@ -47,12 +49,16 @@ body.enabled {
           padding: 5px 20px;
           padding-bottom: 10px;
           font-size: 30pt; }
+        body.enabled #root #classSidebar #sideBarMovingArea #archivedCourses {
+          transition: all 500ms ease; }
         body.enabled #root #classSidebar #sideBarMovingArea .courseTab {
           width: 100%;
           font-size: 14pt;
           color: #fffbf0; }
-          body.enabled #root #classSidebar #sideBarMovingArea .courseTab.current {
-            background-color: #09a8c8; }
+          body.enabled #root #classSidebar #sideBarMovingArea .courseTab.current, body.enabled #root #classSidebar #sideBarMovingArea .courseTab:hover {
+            background-color: var(--background-color); }
+          body.enabled #root #classSidebar #sideBarMovingArea .courseTab.archived {
+            color: gray; }
     body.enabled #root #courseContainer {
       display: flex;
       flex-grow: 1;
@@ -102,6 +108,8 @@ body.enabled {
           padding: 2rem;
           flex: 2.9;
           background-color: #fffbf0; }
+  body.enabled #contextMenu {
+    z-index: 99999; }
   body.enabled #pageTitleHeader {
     display: none; }
   body.enabled #pageTitleBar img {
@@ -194,9 +202,11 @@ body.enabled {
           body.enabled .container .gradeTableNew #grades_wrapper .row .cell.gradeStatus {
             max-width: 10%;
             min-width: 10%; }
-  body.enabled [href="#actionMenu_0"], body.enabled [href="#actionMenu_1"] {
+  body.enabled [href="#actionMenu_0"],
+  body.enabled [href="#actionMenu_1"] {
     display: none; }
-  body.enabled .hideoff, body.enabled .hideme {
+  body.enabled .hideoff,
+  body.enabled .hideme {
     display: none; }
   body.enabled .calPicker {
     display: none;
