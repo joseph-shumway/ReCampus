@@ -12,21 +12,22 @@
         project_root: ./
         
     todo:
-        - skypack link fails
-        - display normal eCampus on failure
-        - add hover
-        - detect if class url
-        - hide body
-        - extract the sidepanel links
         - generate tabs
-        - create class title bar
         - extract course content:
             - assignments
             - videos
             - grades
         - style course content
         - assign colors to indexes
-        - set color on active tab
         - set color on tab hover
         - duplicate my organizations into classes, add a seperator
         - announcements
+    done:
+        - set color on active tab
+        - create class title bar
+        - skypack link fails
+        - detect if class url
+        - hide body
+        - extract the sidepanel links
+        - display normal eCampus on failure
+        - add hover
