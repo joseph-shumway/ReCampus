@@ -341,7 +341,10 @@ function renderMain(menuItems, mainContentArea) {
                     )
                 )
             )
-            document.body.insertBefore(rootContainer, document.body.childNodes[0])
+            document.body = new BODY(
+                {},
+                rootContainer
+            )
         }
         
         // 
