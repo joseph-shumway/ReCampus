@@ -1,3 +1,8 @@
+#
+# this project
+#
+ext.zip
+
 # 
 # My own
 # 
@@ -25,7 +30,7 @@
 # MacOS
 # 
 # General
-
+ext.zip
 .AppleDouble
 .LSOverride
 
