@@ -7,22 +7,26 @@
         compile: npx node-sass ./ext/src/inject/inject.scss -o ./ext/src/inject/
         start_watcher: npx node-sass --watch ./ext/src/inject/inject.scss:./ext/src/inject/inject.css
         (setup): echo 'setup command unset' 
+        unix_zip: zip ext -r ext
     
     (paths):
         project_root: ./
         
     todo:
-        - generate tabs
+        - duplicate my organizations into classes, add a seperator
+        - announcements/notifications on the right side
+        - extract course content:
+            - grades
+            - submission fields
+            - quiz/assignment fields
+    done:
         - extract course content:
             - assignments
             - videos
-            - grades
         - style course content
         - assign colors to indexes
         - set color on tab hover
-        - duplicate my organizations into classes, add a seperator
-        - announcements
-    done:
+        - generate tabs
         - set color on active tab
         - create class title bar
         - skypack link fails

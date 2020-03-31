@@ -313,7 +313,13 @@ function renderMain(menuItems, mainContentArea) {
                         ),
 
                         logoutButton = new A (
-                            {id: "logoutButton", href: hardcodedValues.logout},
+                            {
+                                id: "logoutButton",
+                                href: hardcodedValues.logout,
+                                onclick: ()=>{
+                                    alert("\n\nFun fact:\nThe Real eCampus logout button actually doesn't do anything!\n\nDon't believe me? Open a new icognito window, login, logout (it will say successful but...) go to the login page again and it will immediatly log you in (no username+password needed).\n\n🌟 The more you know 🌟 \nI'll click the eCampus button and redirect you anyways encase they ever decide to fix this\n\nAlso Note: although this won't log you out, for some reason eCampus does clear your localstorage meaning there's no way for me to save your Archived Classes. So you'll have to reset that upon logging back in.")
+                                }
+                            },
                             "Logout"
                         )
 
@@ -411,10 +417,9 @@ try {
     let url = window.location.href.replace(/https?:\/\//, "")
     
     // login page
-    if (url=="ecampus.tamu.edu/") {
-        // immediatly redirect to login page 
+    if (url=="ecampus.tamu.edu/" || url=="tamu.blackboard.com/webapps/login/") {
+        // immediatly redirect to the actual login page 
         window.location.href = "https://tamu.blackboard.com/webapps/bb-auth-provider-shibboleth-BBLEARN/execute/shibbolethLogin?returnUrl=https%3A%2F%2Ftamu.blackboard.com%2Fwebapps%2Fportal%2Fexecute%2FdefaultTab&authProviderId=_102_1"
-    
     // eCampus home page (never show, just scrape data then redirect)
     } else if (url=="tamu.blackboard.com/webapps/portal/execute/tabs/tabAction?tab_tab_group_id=_25_1") {
         removeJunkCss()
