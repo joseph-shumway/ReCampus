@@ -196,7 +196,7 @@ function contextMenuHelper(eventObject, where, optionsAndCallbacks) {
             contextMenu.add(new LI({ class:"divider", tabindex:"-1"}))
         }
         // actual options
-        contextMenu.add(new A({ class: "btn-flat white", onclick: each[1]}, each[0]))
+        contextMenu.add(new A({ class: "btn-flat white", onclick: each.onClick}, each.nameOfOption))
     }
     
     contextMenu.style = {
@@ -286,7 +286,7 @@ function renderMain(menuItems, mainContentArea) {
                                     ReCampus
                                 </div>
 
-                                ${classes.filter(each=>!each.isArchived).map(each=>`<a class="courseTab ${each.title==currentClassTitle&&"current"} waves-effect waves-teal btn-large btn-flat" style="--background-color: ${each.color};" href="${each.href}">${each.title}</a>`).join("\n")}
+                                ${classes.filter(each=>!each.isArchived).map(each=>`<a class="courseTab ${each.href==currentClass.href&&"current"} waves-effect waves-teal btn-large btn-flat" style="--background-color: ${each.color};" href="${each.href}">${each.title}</a>`).join("\n")}
                                 
                                 <div style='height: 2rem'></div>
                                 <div id=archivedCoursesTitle style='color: gray; border-bottom: 2px solid gray; display: flex; align-content: center; justify-content: center'>Archived Courses</div>
@@ -345,6 +345,8 @@ function renderMain(menuItems, mainContentArea) {
                 {},
                 rootContainer
             )
+            document.body.classList.add("enabled")
+            document.body.style.display = "unset"
         }
         
         // 
@@ -357,34 +359,47 @@ function renderMain(menuItems, mainContentArea) {
                 eventObject.preventDefault()
                 // figure out which course got right-clicked
                 let targetClass = classes.find(each=>each.href == eventObject.target.href)
-                
                 let contextOptions = []
-                // show dropdown menu
+                
+
+                // renaming options
+                contextOptions.push({
+                    nameOfOption: "Rename (nickname)",
+                    onClick: ()=>{
+                        targetClass.title = prompt("What should the new name be?")
+                        // save the changes
+                        localStorage.setItem("classes", JSON.stringify(classes))
+                        // re-render the side bar
+                        render() 
+                    }
+                })
+                
+                // archiving options
                 if (targetClass.isArchived == true) {
-                    contextOptions.push([
-                        "Unarchive this course",
-                        ()=>{
+                    contextOptions.push({
+                        nameOfOption: "Unarchive this course",
+                        onClick: ()=>{
                             targetClass.isArchived = false
                             // save the changes
                             localStorage.setItem("classes", JSON.stringify(classes))
                             // re-render the side bar
                             render()
                         },
-                    ])
+                    })
                 } else {
-                    contextOptions.push([
-                        "Archive this course",
-                        ()=>{
+                    contextOptions.push({
+                        nameOfOption: "Archive this course",
+                        onClick: ()=>{
                             targetClass.isArchived = true
                             // save the changes
                             localStorage.setItem("classes", JSON.stringify(classes))
                             // re-render the side bar
                             render()
                         }
-                    ])
+                    })
                 }
                 
-                
+                // show dropdown menu
                 contextMenuHelper(eventObject, classSidebar, contextOptions)
             }
 
@@ -487,7 +502,19 @@ try {
             })
         })
         
-        // save the classes to localStorage
+        // load any previous settings
+        try {
+            let previousClasses = JSON.parse(localStorage.getItem("classes"))
+            for (let each in classes) {
+                if (previousClasses[each] instanceof Object) {
+                    classes[each] = {...classes[each], ...previousClasses[each]}
+                }
+            }
+        } catch (error) {
+            
+        }
+
+        // save the classes to localStorage for use on the next page
         localStorage.setItem("classes", JSON.stringify(classes))
 
         // redirect to the first class's page
@@ -500,17 +527,19 @@ try {
     // 
     let loader = async function() {
         
-        let getMyCoursesElement = () => {
+        let myCoursesElementHasLoadedMoreThanZeroClasses = () => {
             let sorted = [...document.querySelectorAll("div")].filter(each => each.innerHTML.match(/<h2[\s\S]*<span[\s\S]*My Courses/g)).sort((a, b) => a.innerHTML.length - b.innerHTML.length)
+            let classClickables = [...document.querySelectorAll("*")].filter(each=>each.href&&each.href.match(/.*\/webapps\/blackboard\/execute\/launcher\?type=Course&id=/))
             sorted[0].id = "myCourses"
-            return sorted[0]
+            let classes = [...document.querySelectorAll("#myCourses li a")].map(each => ({ href: each.href, title: each.text }))
+            return classes instanceof Array && classes.length > 0
         }
 
         let getClassList = ()=> {
-            // sets the #myCourses id
-            getMyCoursesElement()
-            let classes = [...document.querySelectorAll("#myCourses li a")].map(each => ({ href: each.href, title: each.text }))
-            return classes
+            // get all the ones with a link to a class
+            let classClickables = [...document.querySelectorAll("*")].filter(each=>each.href&&each.href.match(/.*\/webapps\/blackboard\/execute\/launcher\?type=Course&id=/))
+            // extract the name of the link and the link
+            return classClickables.map(each=>({ href: each.href, title: each.innerText }))
         }
 
         if (eCampusLocation == "home") {
@@ -520,13 +549,15 @@ try {
             let intervalWatcher
             intervalWatcher = setInterval(()=>{
                 classes = []
+                let elementsAreLoaded = false
                 try {
                     classes = getClassList()
+                    elementsAreLoaded = myCoursesElementHasLoadedMoreThanZeroClasses()
                 } catch (error) {
                     
                 }
                 // if the classes were found
-                if (classes instanceof Array && classes.length > 0) {
+                if (classes instanceof Array && classes.length > 0 && elementsAreLoaded) {
                     // then stop looping and call the main function
                     clearInterval(intervalWatcher)
                     loadedHome()

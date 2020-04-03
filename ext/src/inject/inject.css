@@ -113,7 +113,11 @@ body.enabled {
           flex: 2.9;
           background-color: #fffbf0; }
   body.enabled #contextMenu {
-    z-index: 99999; }
+    z-index: 99999;
+    display: flex;
+    flex-direction: column; }
+    body.enabled #contextMenu * {
+      border-radius: 0; }
   body.enabled #pageTitleHeader {
     display: none; }
   body.enabled #pageTitleBar img {

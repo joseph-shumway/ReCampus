@@ -170,6 +170,12 @@ body.enabled {
 
     #contextMenu {
         z-index: 99999;
+        display: flex;
+        flex-direction: column;
+        
+        * {
+            border-radius: 0;
+        }
     }
 
     //

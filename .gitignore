@@ -30,7 +30,7 @@ ext.zip
 # MacOS
 # 
 # General
-ext.zip
+.DS_Store
 .AppleDouble
 .LSOverride
 
@@ -574,3 +574,4 @@ dkms.conf
 
 # Executables
 *.out
+
