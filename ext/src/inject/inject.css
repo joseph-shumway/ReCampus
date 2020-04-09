@@ -5,6 +5,9 @@
 body {
   display: none; }
 
+a {
+  cursor: pointer; }
+
 body.enabled {
   /* HSL */ }
   body.enabled:first-child {

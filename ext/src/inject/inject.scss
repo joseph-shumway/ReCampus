@@ -6,6 +6,11 @@ body {
     display: none; // hide everything at first to speed up processing
 }
 
+a {
+    // make links look like they are clickable (because they are)
+    cursor: pointer;
+}
+
 body.enabled {
     &:first-child {
         display: unset;
